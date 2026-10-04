@@ -1,0 +1,37 @@
+# Build and generated files
+build/
+.comparison/
+.deps/
+.verification/
+test.cpp
+*.exe
+*.obj
+*.dll
+*.pdb
+*.ilk
+*.lib
+*.exp
+
+# Generated outputs and local diagnostics
+analytic_out.txt
+cpp_data.txt
+cpp_out.txt
+dbg.txt
+final_out.txt
+final_verified.txt
+new_out.txt
+optimized_output.txt
+out.tmp
+reference.txt
+run.err
+run.out
+verification_output.txt
+verify2.txt
+build_output.txt
+
+# IDE and local metadata
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo

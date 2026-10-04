@@ -1,0 +1,17 @@
+if(NOT DEFINED PROGRAM OR NOT DEFINED DATA OR NOT DEFINED EXPECTED)
+  message(FATAL_ERROR "PROGRAM, DATA and EXPECTED are required")
+endif()
+execute_process(COMMAND "${PROGRAM}" "${DATA}" ${MODE}
+  RESULT_VARIABLE status OUTPUT_VARIABLE actual ERROR_VARIABLE diagnostic
+  TIMEOUT 10 ENCODING UTF-8)
+if(NOT status EQUAL 0)
+  message(FATAL_ERROR "Program failed (${status}): ${diagnostic}")
+endif()
+string(REPLACE "\r\n" "\n" actual "${actual}")
+string(REGEX REPLACE "time_[^\n]*\n" "" actual "${actual}")
+file(READ "${EXPECTED}" expected)
+string(REPLACE "\r\n" "\n" expected "${expected}")
+if(NOT actual STREQUAL expected)
+  message(FATAL_ERROR "Output changed.\nEXPECTED:\n${expected}\nACTUAL:\n${actual}")
+endif()
+message(STATUS "All metric rows and solver counters match the pre-refactor output")
