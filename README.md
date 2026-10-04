@@ -8,6 +8,7 @@
 - [项目结构文档](STRUCTURE.md)
 - [模块简表](MODULES.md)
 - [算法、性能和结果报告](REPORT.md)
+- [GitHub 开源项目复用调研](REUSE_REPORT.md)
 
 ## 构建运行
 
