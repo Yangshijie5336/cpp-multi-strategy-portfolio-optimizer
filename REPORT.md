@@ -2,6 +2,8 @@
 
 开源候选项目优劣、复用路线和验证标准见 [GitHub 复用调研报告](REUSE_REPORT.md)。
 
+`EvaluatePNL` 的 `Compat`/`High` 实现见 [API.md](API.md)；高精度模式保留零收益观测并对不可定义指标返回 `NA`。
+
 ## 1. 工程与运行方式
 
 模块职责和依赖关系见 [MODULES.md](MODULES.md)，函数级接口见 [API.md](API.md)。入口 `main.cpp` 现在只负责调用 `mvo::run_cli`；命令行、数据读取、日期处理、预处理、矩估计、求解、绩效和输出分别属于独立模块。

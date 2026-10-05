@@ -3,6 +3,7 @@
 #include "mvo/data.hpp"
 #include "mvo/dates.hpp"
 #include "mvo/evaluation.hpp"
+#include "mvo/evaluate_pnl.hpp"
 #include <iostream>
 using namespace mvo;
 int main() {
@@ -42,6 +43,22 @@ int main() {
                 "NAV conversion failed");
         require(convert_daily(values, InputType::CumulativePnL)[1].isApprox(Vector::Ones()),
                 "PnL conversion failed");
+        EvaluatePNL compat({1.0, 1.0, 1.2, 1.2, 1.1}, 250, EvaluateMode::Compat,
+                           {44197, 44198, 44199, 44200, 44201});
+        EvaluatePNL high({1.0, 1.0, 1.2, 1.2, 1.1}, 250, EvaluateMode::High,
+                         {44197, 44198, 44199, 44200, 44201});
+        require(compat.get_return() && high.get_return() &&
+                    *compat.get_return() > *high.get_return(),
+                "EvaluatePNL zero-return modes failed");
+        EvaluatePNL zero({1.0, 1.0, 1.0}, 250, EvaluateMode::High,
+                         {44197, 44198, 44199});
+        require(zero.get_std() && *zero.get_std() == 0.0 && !zero.get_sharp() &&
+                    !zero.get_calmar(),
+                "EvaluatePNL zero division guard failed");
+        require(high.get_max_drawdown() &&
+                    std::abs(high.get_max_drawdown()->value - .1) < 1e-12 &&
+                    high.get_max_drawdown()->peak == 2 && high.get_max_drawdown()->trough == 4,
+                "EvaluatePNL linear drawdown failed");
         const std::vector<double> dates{44197, 44198, 44199};
         auto metrics = Evaluator::evaluate({1, 1.1, 1.05}, dates, 250);
         require(std::abs(metrics.drawdown - .05) < 1e-12 && metrics.peak == 1 &&

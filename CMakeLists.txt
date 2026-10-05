@@ -11,7 +11,8 @@ add_library(mvo_core
   src/moments.cpp src/moment_cache.cpp
   src/constraints.cpp src/optimization_model.cpp
   src/highs_solver.cpp src/slsqp_solver.cpp src/solver.cpp src/compatibility.cpp
-  src/evaluation.cpp src/reporting.cpp src/portfolio.cpp)
+  src/evaluation.cpp src/reporting.cpp src/portfolio.cpp
+  src/evaluate_pnl.cpp)
 target_include_directories(mvo_core PUBLIC include)
 target_link_libraries(mvo_core PUBLIC Eigen3::Eigen)
 if(TARGET highs::highs)

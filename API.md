@@ -167,6 +167,23 @@ NaN 表示诊断不可用，不能按零残差解释。保留旧权重时 `succe
 
 ## 6. 组合构建与评价
 
+### `EvaluatePNL` 兼容/高精度评价类
+
+新增接口位于 `include/mvo/evaluate_pnl.hpp`，实现位于 `src/evaluate_pnl.cpp`：
+
+```cpp
+enum class EvaluateMode { Compat, High };
+
+EvaluatePNL evaluator(pnl, 250, EvaluateMode::High, dates);
+auto metrics = evaluator.evaluate();
+```
+
+`Compat` 用于复现 `algo.py`：计算相邻 PnL 差值，并剔除零差值；最大回撤保留原 Python 的全日期对口径。`High` 修正两个问题：零差值作为真实日频观测保留，最大回撤使用 O(n) 扫描。两种模式都不返回无穷大或静默 NaN：样本不足、波动率为零导致 Sharpe 不可定义、回撤为零导致 Calmar 不可定义时，相关字段为 `std::nullopt`；波动率本身为零仍返回有效的 `0.0`。
+
+公开方法对应原 Python 类：`get_return`、`get_std`、`get_sharp`、`get_max_drawdown`、`get_win_percent`、`get_calmar`、`evaluate` 和 `print`。收益率和波动率仍按差值 PnL 计算，`High` 只修正零差值的样本保留，不自动把 PnL 转为百分比收益率。`get_calmar` 需要提供与 PnL 等长且严格递增的 Excel 日期序号；未提供日期时返回不可用。
+
+`Drawdown` 保存绝对回撤值及 peak/trough 下标。`print` 保留报告的 ` & ` 格式，指标不可用时打印 `NA`。如果需要相对回撤或复利净值，应在输入层先转换，不能把当前绝对 PnL 指标直接解释为百分比回撤。
+
 ```cpp
 PortfolioResult run_portfolio(const Samples& daily,
                               const std::vector<RebalanceMoments>& moments,
