@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-16"?>
+<Task xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo><Description>Authorized strict cold start benchmark</Description></RegistrationInfo>
+  <Triggers><BootTrigger><Enabled>true</Enabled><Delay>PT30S</Delay></BootTrigger></Triggers>
+  <Principals><Principal id="Author"><UserId>S-1-5-18</UserId><RunLevel>HighestAvailable</RunLevel></Principal></Principals>
+  <Settings><MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy><StartWhenAvailable>true</StartWhenAvailable><ExecutionTimeLimit>PT10M</ExecutionTimeLimit></Settings>
+  <Actions Context="Author"><Exec>
+    <Command>powershell.exe</Command>
+    <Arguments>-NoProfile -ExecutionPolicy Bypass -File &quot;C:\Users\YSJ\Desktop\量化开发工程师笔试题杨世杰\yangshijie\tools\cold_start_sequence.ps1&quot;</Arguments>
+    <WorkingDirectory>C:\Users\YSJ\Desktop\量化开发工程师笔试题杨世杰\yangshijie</WorkingDirectory>
+  </Exec></Actions>
+</Task>
