@@ -16,8 +16,9 @@
 
 ```bat
 cmake_build.bat
-mvo.exe data.xls
-mvo.exe data.xls --compat
+mvo.exe data.xls                 rem 默认：复现 algo.py
+mvo.exe data.xls --compat        rem 显式复现模式（同默认）
+mvo.exe data.xls --high          rem HighAccuracy 增强/实验模式
 ctest --test-dir build --output-on-failure
 ```
 
@@ -26,3 +27,4 @@ ctest --test-dir build --output-on-failure
 ## 输入格式
 
 输入为第一个工作表，首行包含日期列及 `a`～`h` 八个数值列。默认按累计损益差值处理，也支持 `--nav` 和 `--daily-return`。
+默认求解路径是 `PythonCompatible`，优先保持与 `algo.py` 的统计口径、SLSQP 路径和输出一致；`--high`/`--high-accuracy` 才启用加入协方差稳健化和 HiGHS LP/QP 的 HighAccuracy 增强方案。

@@ -31,7 +31,10 @@ struct Options {
     int window = 60, keep = 15, yr_dates = 250;
     double sigma = 3, turnover = .1, feasibility_tolerance = 1e-9, optimality_tolerance = 1e-9;
     double eigenvalue_relative_floor = 1e-12;
-    AccuracyMode accuracy = AccuracyMode::HighAccuracy;
+    // Reproduction of algo.py is the public/default path.  HighAccuracy is
+    // opt-in because its robust covariance and convex solver intentionally
+    // change the statistical model and therefore the numerical result.
+    AccuracyMode accuracy = AccuracyMode::PythonCompatible;
     InputType input = InputType::CumulativePnL;
     MissingValuePolicy missing = MissingValuePolicy::Reject;
     std::optional<double> capital;

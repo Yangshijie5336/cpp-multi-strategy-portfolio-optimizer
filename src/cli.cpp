@@ -9,6 +9,8 @@ CommandLine parse_command_line(int argc, char **argv) {
         const std::string flag = argv[i];
         if (flag == "--compat")
             result.options.accuracy = AccuracyMode::PythonCompatible;
+        else if (flag == "--high" || flag == "--high-accuracy")
+            result.options.accuracy = AccuracyMode::HighAccuracy;
         else if (flag == "--debug")
             result.options.debug = true;
         else if (flag == "--nav")

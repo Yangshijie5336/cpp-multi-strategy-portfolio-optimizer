@@ -16,6 +16,7 @@ foreach ($mode in @('high', 'compat')) {
         $info.RedirectStandardError = $true
         $info.Arguments = '"' + $dataPath + '"'
         if ($mode -eq 'compat') { $info.Arguments += ' --compat' }
+        else { $info.Arguments += ' --high' }
         $process = [System.Diagnostics.Process]::new()
         $process.StartInfo = $info
         # Includes process creation, loader/DLL startup, computation, output,

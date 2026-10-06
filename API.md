@@ -7,6 +7,7 @@
 ```bat
 mvo.exe
 mvo.exe data.xls --compat
+mvo.exe data.xls --high
 mvo.exe data.xls --debug
 mvo.exe nav.xls --nav
 mvo.exe returns.xls --daily-return
@@ -17,11 +18,12 @@ mvo.exe returns.xls --daily-return
 | 选项 | 行为 |
 |---|---|
 | `--compat` | Python 兼容统计与 legacy SLSQP 求解 |
+| `--high`, `--high-accuracy` | HighAccuracy 增强/实验路径：稳健协方差和 HiGHS LP/QP |
 | `--debug` | 向标准错误输出各策略最后一次调仓诊断 |
 | `--nav` | 输入按正净值计算相邻比值收益 |
 | `--daily-return` | 输入直接作为每日收益/损益增量 |
 
-默认高精度模式、累计损益输入。重复或冲突选项按从左到右覆盖（例如最后一个输入类型选项生效）。其他参数如窗口和本金只能通过 C++ `Options` 设置。
+默认 Python 兼容模式、累计损益输入。`--compat` 是显式别名；只有 `--high`/`--high-accuracy` 才切换到 HighAccuracy。重复或冲突选项按从左到右覆盖（例如最后一个输入类型选项生效）。其他参数如窗口和本金只能通过 C++ `Options` 设置。
 
 标准输出包含三种目标分别使用普通/指数加权统计的六行指标、一行基准指标、求解计数和 `time_*_ms` 耗时；正常结束返回 `0`，捕获 `std::exception` 后输出 `error: ...` 并返回 `1`。返回 `0` 不代表所有调仓求解成功，还需检查 `failure` 和 `fallback`。
 
@@ -48,7 +50,7 @@ using Samples = std::vector<Vector>;
 | `feasibility_tolerance` | 1e-9 | 高精度路径结果约束验收容差 |
 | `optimality_tolerance` | 1e-9 | HiGHS 缩放模型 KKT 验收容差 |
 | `eigenvalue_relative_floor` | 1e-12 | 正则化特征值下限参数，应有限且为正 |
-| `accuracy` | `HighAccuracy` | 另一值为 `PythonCompatible` |
+| `accuracy` | `PythonCompatible` | `HighAccuracy` 仅由 `--high`/`--high-accuracy` 显式启用 |
 | `input` | `CumulativePnL` | 另有 `NAV`、`DailyReturn` |
 | `missing` | `Reject` | 另有 `DropRow` |
 | `capital` | 空 | 累计损益转增量的除数；指定时必须有限且为正 |

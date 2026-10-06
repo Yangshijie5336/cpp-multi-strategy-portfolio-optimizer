@@ -8,6 +8,8 @@
 using namespace mvo;
 int main() {
     try {
+        require(Options{}.accuracy == AccuracyMode::PythonCompatible,
+                "default accuracy must prioritize Python reproduction");
         Options options;
         options.accuracy = AccuracyMode::HighAccuracy;
         Vector previous = options.initial;
@@ -70,6 +72,11 @@ int main() {
         require(cli.input_path == "sample.xls" &&
                     cli.options.accuracy == AccuracyMode::PythonCompatible,
                 "CLI parsing failed");
+        char high_flag[] = "--high";
+        char *high_args[]{exe, path, high_flag};
+        auto high_cli = parse_command_line(3, high_args);
+        require(high_cli.options.accuracy == AccuracyMode::HighAccuracy,
+                "high accuracy CLI parsing failed");
         std::cout << "module regression passed\n";
         return 0;
     } catch (const std::exception &e) {
